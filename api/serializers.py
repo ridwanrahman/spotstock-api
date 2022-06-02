@@ -1,6 +1,5 @@
-from django.contrib.auth.models import User, Group
 from rest_framework import serializers
-from data_loader.models import Company
+from data_loader.models import Company, Person, PersonFriend, Fruit, Vegetable
 
 
 class CompanySerializer(serializers.HyperlinkedModelSerializer):
@@ -8,13 +7,26 @@ class CompanySerializer(serializers.HyperlinkedModelSerializer):
         model = Company
         fields = ['id', 'index', 'company']
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+
+class PersonSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = User
-        fields = ['url', 'username', 'email', 'groups']
+        model = Person
+        fields = ['id', 'index', 'guid', 'name', 'age', 'address', 'phone', 'eye_color', 'has_died', 'company_id']
 
 
-class GroupSerializer(serializers.HyperlinkedModelSerializer):
+class PersonFriendSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = Group
-        fields = ['url', 'name']
+        model = PersonFriend
+        fields = ['person_id', 'friend_id']
+
+
+class FruitSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Fruit
+        fields = ['id', 'fruit_name']
+
+
+class VegetableSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Vegetable
+        fields = ['id', 'vegetable_name']

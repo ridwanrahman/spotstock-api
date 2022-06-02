@@ -1,31 +1,46 @@
 from django.shortcuts import render
 
 # Create your views here.
-from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
-from rest_framework import permissions
-from api.serializers import UserSerializer, GroupSerializer, CompanySerializer
-from data_loader.models import Company
+from api.serializers import CompanySerializer, PersonSerializer, PersonFriendSerializer, FruitSerializer, VegetableSerializer
+from data_loader.models import Company, Person, PersonFriend, Fruit, Vegetable
 
 
 class CompanyViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows companies to be viewed or edited.
+    """
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
 
 
-class UserViewSet(viewsets.ModelViewSet):
+class PersonViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows users to be viewed or edited.
+    API endpoint that allows people to be viewed or edited.
     """
-    queryset = User.objects.all().order_by('-date_joined')
-    serializer_class = UserSerializer
-    # permission_classes = [permissions.IsAuthenticated]
+    queryset = Person.objects.all()
+    serializer_class = PersonSerializer
 
 
-class GroupViewSet(viewsets.ModelViewSet):
+class PersonFriendViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows groups to be viewed or edited.
+    API endpoint that allows person and friend relation to be viewed or edited.
     """
-    queryset = Group.objects.all()
-    serializer_class = GroupSerializer
-    # permission_classes = [permissions.IsAuthenticated]
+    queryset = PersonFriend.objects.all()
+    serializer_class = PersonFriendSerializer
+
+
+class FruitViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows fruits to be viewed or edited.
+    """
+    queryset = Fruit.objects.all()
+    serializer_class = FruitSerializer
+
+
+class VegetableViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows vegetables to be viewed or edited.
+    """
+    queryset = Vegetable.objects.all()
+    serializer_class = VegetableSerializer
