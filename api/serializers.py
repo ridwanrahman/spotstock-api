@@ -1,6 +1,12 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
+from data_loader.models import Company
 
+
+class CompanySerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Company
+        fields = ['id', 'index', 'company']
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
