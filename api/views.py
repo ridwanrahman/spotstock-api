@@ -10,7 +10,6 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 
-
 class CompanyViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows companies to be viewed or edited.
@@ -72,8 +71,13 @@ class QuestionOne(APIView):
 
 class QuestionTwo(APIView):
     def get(self, request):
-        person1 = self.request.query_params.get('person1')
-        person2 = self.request.query_params.get('person2')
+        person1_obj = Person.objects.get(
+            index=int(self.request.query_params.get('person1'))
+        )
+        person2_obj = Person.objects.get(
+            index=int(self.request.query_params.get('person2'))
+        )
+
         color = 'brown'
         final_list = []
         for i in Person.objects.raw(
@@ -81,8 +85,27 @@ class QuestionTwo(APIView):
             'join data_loader_personfriend pf on p.id=pf.person_id_id '
             'join data_loader_person ip on ip.id=pf.friend_id_id '
             'where p.name in (%s, %s) '
-            'and ip.eye_color=%s and ip.has_died=0 group by ip.id', [person1, person2, color]
+            'and ip.eye_color=%s and ip.has_died=0 group by ip.id', [person1_obj.name, person2_obj.name, color]
         ):
-            # pass
-            final_list.append(i)
+            final_list.append(i.name)
+
+        final_response = [
+            {
+                "Name": person1_obj.name,
+                "Age": person1_obj.age,
+                "Address": person1_obj.address,
+                "Phone": person1_obj.phone
+            },
+            {
+                "Name": person2_obj.name,
+                "Age": person2_obj.age,
+                "Address": person2_obj.address,
+                "Phone": person2_obj.phone
+            },
+            {
+                "common_friends": final_list
+            }
+        ]
+
+        return Response(final_response)
 
