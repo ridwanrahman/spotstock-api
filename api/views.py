@@ -2,14 +2,13 @@ from django.shortcuts import render
 
 # Create your views here.
 from rest_framework import viewsets
-from api.serializers import CompanySerializer, PersonSerializer, PersonFriendSerializer, FruitSerializer, VegetableSerializer
+from api.serializers import CompanySerializer, PersonSerializer, PersonFriendSerializer, FruitSerializer, \
+    VegetableSerializer
 from data_loader.models import Company, Person, PersonFriend, Fruit, Vegetable
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
-# from django.http.HttpRequest import Request
 
-from rest_framework.decorators import api_view
 
 
 class CompanyViewSet(viewsets.ModelViewSet):
@@ -52,12 +51,6 @@ class VegetableViewSet(viewsets.ModelViewSet):
     serializer_class = VegetableSerializer
 
 
-# @api_view(['GET'])
-# def question_one(request):
-#     return Response({
-#         'status': 200,
-#         'message': 'success'
-#     })
 class QuestionOne(APIView):
     def get(self, request, company_index):
         """
@@ -76,10 +69,20 @@ class QuestionOne(APIView):
         serializer = PersonSerializer(people_working_in_company, many=True, context=serializer_context)
         return Response(serializer.data)
 
+
 class QuestionTwo(APIView):
     def get(self, request):
         person1 = self.request.query_params.get('person1')
-        person2 = self.request.query_params.get('person1')
+        person2 = self.request.query_params.get('person2')
+        color = 'brown'
+        final_list = []
+        for i in Person.objects.raw(
+            'select ip.id, ip.name from data_loader_person p '
+            'join data_loader_personfriend pf on p.id=pf.person_id_id '
+            'join data_loader_person ip on ip.id=pf.friend_id_id '
+            'where p.name in (%s, %s) '
+            'and ip.eye_color=%s and ip.has_died=0 group by ip.id', [person1, person2, color]
+        ):
+            # pass
+            final_list.append(i)
 
-        print(person1)
-        print(person2)
