@@ -76,8 +76,120 @@ class TestQuestionOne(TestCase):
 class TestQuestionTwo(TestCase):
 
     def test_question_two(self):
-        pass
+        wrapper = Wrapper()
+        file_wrapper = wrapper.create('people')
 
+        # record contains 4 peope, all friends with each other
+        # and two have brown eyes
+        records = [
+            {
+                "index": 0,
+                "guid": "5e71dc5d-61c0-4f3b-8b92-d77310c7fa43",
+                "has_died": True,
+                "age": 61,
+                "eyeColor": "blue",
+                "name": "TEST USER_1",
+                "company_id": 58,
+                "email": "carmellalambert@earthmark.com",
+                "phone": "+1 (910) 567-3630",
+                "address": "628 Sumner Place, Sperryville, American Samoa, 9819",
+                "friends": [
+                    {
+                        "index": 1
+                    },
+                    {
+                        "index": 2
+                    },
+                    {
+                        "index": 3
+                    }
+                ],
+                "favouriteFood": [],
+            },
+            {
+                "index": 1,
+                "guid": "5e71dc5d-61c0-4f3b-8b92-d77310fa43",
+                "has_died": True,
+                "age": 61,
+                "eyeColor": "brown",
+                "name": "TEST USER_2",
+                "company_id": 58,
+                "email": "carmellalambert@earthmark.com",
+                "phone": "+1 (910) 567-3630",
+                "address": "628 Sumner Place, Sperryville, American Samoa, 9819",
+                "friends": [
+                    {
+                        "index": 0
+                    },
+                    {
+                        "index": 2
+                    },
+                    {
+                        "index": 3
+                    }
+                ],
+                "favouriteFood": [],
+            },
+            {
+                "index": 2,
+                "guid": "5e71dc5d-61c0-4f3b",
+                "has_died": True,
+                "age": 61,
+                "eyeColor": "blue",
+                "name": "TEST USER_3",
+                "company_id": 58,
+                "email": "carmellalambert@earthmark.com",
+                "phone": "+1 (910) 567-3630",
+                "address": "628 Sumner Place, Sperryville, American Samoa, 9819",
+                "friends": [
+                    {
+                        "index": 0
+                    },
+                    {
+                        "index": 1
+                    },
+                    {
+                        "index": 3
+                    }
+                ],
+                "favouriteFood": [],
+            },
+            {
+                "index": 3,
+                "guid": "5e71dc5d--4f3b-8b92-d77310fa43",
+                "has_died": False,
+                "age": 61,
+                "eyeColor": "brown",
+                "name": "TEST USER_4",
+                "company_id": 58,
+                "email": "carmellalambert@earthmark.com",
+                "phone": "+1 (910) 567-3630",
+                "address": "628 Sumner Place, Sperryville, American Samoa, 9819",
+                "friends": [
+                    {
+                        "index": 0
+                    },
+                    {
+                        "index": 1
+                    },
+                    {
+                        "index": 2
+                    }
+                ],
+                "favouriteFood": [],
+            }
+        ]
+
+        # add the 4 people and their friends
+        for index, record in enumerate(records):
+            file_wrapper.handle_record(index, record)
+        file_wrapper.friends_fillup()
+
+        question_two = QuestionTwo()
+        response = question_two.get_response(0, 1)
+        common_friends = response[2]['common_friends']
+        assert (common_friends[0] == 'TEST USER_2')
+        assert (common_friends[1] == 'TEST USER_4')
 
 
 class TestQuestionThree(TestCase):
