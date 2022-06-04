@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-)_1=3-xp%#jf(h%0suze80ctk*vod!r4n@5e3n)luj^h=3*%+t
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'api'
+    'api',
+    'data_loader',
 ]
 
 MIDDLEWARE = [
@@ -76,13 +77,26 @@ WSGI_APPLICATION = 'stockspot.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql', # <-- UPDATED line
+        'NAME': 'mytestdb',                 # <-- UPDATED line
+        'USER': 'ridwan',                     # <-- UPDATED line
+        'PASSWORD': 'ridwan',              # <-- UPDATED line
+        'HOST': 'localhost',                # <-- UPDATED line
+        'PORT': '3306',
     }
 }
 
+REST_FRAMEWORK = {
+    'EXCEPTION_HANDLER': 'api.exceptions.custom_exception_handler'
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -126,3 +140,5 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
