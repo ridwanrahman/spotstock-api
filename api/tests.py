@@ -1,11 +1,11 @@
 import json
-from django.test import TestCase, SimpleTestCase
+from django.test import TestCase
 
 
 from data_loader.models import Company, Person, Fruit, Vegetable
 from api.endpoints.question_endpoints import QuestionOne, QuestionTwo, QuestionThree
 from data_loader.wrappers.Wrapper import Wrapper
-# Create your tests here.
+
 
 class TestQuestionOne(TestCase):
 
@@ -188,8 +188,7 @@ class TestQuestionTwo(TestCase):
         question_two = QuestionTwo()
         response = question_two.get_response(0, 1)
         common_friends = response[2]['common_friends']
-        assert (common_friends[0] == 'TEST USER_2')
-        assert (common_friends[1] == 'TEST USER_4')
+        assert (common_friends[0] == 'TEST USER_4')
 
 
 class TestQuestionThree(TestCase):

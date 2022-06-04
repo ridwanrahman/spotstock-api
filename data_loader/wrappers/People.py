@@ -129,5 +129,3 @@ class PeopleWrapper(Wrapper):
 
             # Fill up the friends table for each person record
             self.friends_fillup()
-
-# if __name__ == '__main__':

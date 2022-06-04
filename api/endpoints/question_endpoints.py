@@ -11,7 +11,6 @@ class QuestionOne:
     def get_response(self, company_index):
         """
         API to return all the employees of a company.
-        :param request: drf request object
         :param company_index: int (company_index)
         :return: serialized person objects
         """
