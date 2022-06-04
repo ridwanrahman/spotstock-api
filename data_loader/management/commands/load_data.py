@@ -12,6 +12,8 @@ from data_loader.wrappers.Wrapper import Wrapper
 BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
 FILE_PATH = Path.joinpath(BASE_DIR, 'resource')
 FILE_LIST = os.listdir(FILE_PATH)
+FILES_SORTED_BY_SIZE = sorted(FILE_LIST,
+                        key=lambda x: os.stat(os.path.join(FILE_PATH, x)).st_size)
 
 
 class Command(BaseCommand):
@@ -26,7 +28,7 @@ class Command(BaseCommand):
         if len(FILE_LIST) == 0:
             raise FileNotFoundError("Folder is empty")
 
-        for file in FILE_LIST:
+        for file in FILES_SORTED_BY_SIZE:
             name_of_file = file.split('.')
             file_name = name_of_file[0]
             loaded = self.load_file(file_name)

@@ -109,3 +109,28 @@ class QuestionTwo(APIView):
 
         return Response(final_response)
 
+
+class QuestionThree(APIView):
+    def get(self, request, person_index):
+        person_obj = Person.objects.get(
+            index=int(person_index)
+        )
+        fruits_list = []
+        vegetables_list = []
+        fruits = Fruit.objects.filter(person=person_obj)
+        if fruits:
+            for fruit in fruits:
+                fruits_list.append(fruit.fruit_name)
+
+        vegetables = Vegetable.objects.filter(person=person_obj)
+        if vegetables:
+            for vege in vegetables:
+                vegetables_list.append(vege.vegetable_name)
+
+        final_response = {
+            "username": person_obj.name,
+            "age": person_obj.age,
+            "fruits": fruits_list,
+            "vegetables": vegetables_list
+        }
+        return Response(final_response)

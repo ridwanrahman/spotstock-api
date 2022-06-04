@@ -15,6 +15,7 @@ urlpatterns = [
     path('', include(router.urls)),
     path('q1/<int:company_index>', views.QuestionOne.as_view()),
     path('q2', views.QuestionTwo.as_view()),
+    path('q3/<int:person_index>', views.QuestionThree.as_view()),
     # path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
 urlpatterns += router.urls

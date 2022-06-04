@@ -53,6 +53,7 @@ PERSON_SCHEMA = {
 class PeopleWrapper(Wrapper):
     def __init__(self):
         self.friends = []
+        self.food = []
         self.fruit = Fruit()
         self.vegetable = Vegetable()
 
@@ -62,6 +63,18 @@ class PeopleWrapper(Wrapper):
             'friends': friends
         }
         self.friends.append(friend_obj)
+
+    def favorite_food_extractor(self, person, food):
+        for item in food:
+            is_fruit = Fruit.objects.filter(fruit_name=item).first()
+            if is_fruit:
+                is_fruit.person.add(person)
+                continue
+
+            is_vegetable = Vegetable.objects.filter(vegetable_name=item).first()
+            if is_vegetable:
+                is_vegetable.person.add(person)
+                continue
 
     def friends_fillup(self):
         for friend_record in self.friends:
@@ -102,6 +115,7 @@ class PeopleWrapper(Wrapper):
             person.company_id = self.assign_company(record['company_id'])
             person.save()
             self.friend_extractor(person, record['friends'])
+            self.favorite_food_extractor(person, record['favouriteFood'])
         except ValidationError as validation_error:
             print(f"Skipping record number: {index} due to validation error")
         except Exception as e:
