@@ -3,29 +3,45 @@ from api.serializers import PersonSerializer
 
 
 class QuestionOne:
+    """
+    Given a company, the API needs to return all their employees. Provide the appropriate solution
+    if the company does not have any employees.
+    """
 
-    def get_response(self, request, company_index):
-        serializer_context = {
-            'request': request,
-        }
-        id = company_index
-        people_working_in_company = Person.objects.filter(company_id__index=id)
-        if people_working_in_company is None:
+    def get_response(self, company_index):
+        """
+        API to return all the employees of a company.
+        :param request: drf request object
+        :param company_index: int (company_index)
+        :return: serialized person objects
+        """
+        people_working_in_company = Person.objects.filter(company_id__index=company_index).all()
+
+        if not people_working_in_company:
             return {
                 'response': f"No employees found for company index: {company_index}"
             }
-        serializer = PersonSerializer(people_working_in_company, many=True, context=serializer_context)
+
+        serializer = PersonSerializer(people_working_in_company, many=True)
         return serializer.data
 
 
 class QuestionTwo:
+    """
+    Given 2 people, provide their information (Name, Age, Address, phone) and the
+    list of their friends in common which have brown eyes and are still alive.
+    """
+    def get_response(self, person_1, person_2):
+        """
 
-    def get_response(self, request):
+        :param request:
+        :return:
+        """
         person1_obj = Person.objects.filter(
-            index=int(request.query_params.get('person1'))
+            index=person_1
         ).first()
         person2_obj = Person.objects.filter(
-            index=int(request.query_params.get('person2'))
+            index=person_2
         ).first()
 
         if person1_obj is None or person2_obj is None:
