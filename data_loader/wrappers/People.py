@@ -87,13 +87,13 @@ class PeopleWrapper(Wrapper):
                 person_friend.friend_id = Person.objects.get(index=friend['index'])
                 person_friend.save()
 
-    def assign_company(self, company_id):
+    def assign_company(self, company_index):
         try:
-            company_exists = Company.objects.get(index=company_id)
+            company_exists = Company.objects.get(index=company_index)
             if company_exists:
                 return company_exists
         except Exception as e:
-            print(f"Company with company id: {company_id} doesnt exist")
+            print(f"Company with company index: {company_index} doesnt exist")
             return None
 
     def handle_record(self, index, record):
