@@ -34,15 +34,16 @@ class PersonFriend(models.Model):
 
 class Fruit(models.Model):
     fruit_name = models.CharField(max_length=20)
-    person = models.ManyToManyField(Person)
+    person = models.ManyToManyField(Person, null=True, blank=True)
 
     def __str__(self):
         return self.fruit_name
 
 
 class Vegetable(models.Model):
+
     vegetable_name = models.CharField(max_length=20)
-    person = models.ManyToManyField(Person)
+    person = models.ManyToManyField(Person, null=True, blank=True)
 
     def __str__(self):
         return self.vegetable_name
