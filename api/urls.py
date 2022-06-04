@@ -1,8 +1,10 @@
 from django.urls import include, path
+
 from rest_framework import routers
-from .services import question_one, question_two
+
 from api.endpoints.viewsets import (CompanyViewSet, PersonFriendViewSet,
                                         PersonViewSet, FruitViewSet, VegetableViewSet)
+from .services import question_one, question_two, question_three
 
 
 router = routers.DefaultRouter()
@@ -16,7 +18,6 @@ urlpatterns = [
     path('', include(router.urls)),
     path('q1/<int:company_index>', question_one),
     path('q2', question_two),
-    # path('q3/<int:person_index>', views.QuestionThree.as_view()),
-    # path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    path('q3/<int:person_index>', question_three),
 ]
 urlpatterns += router.urls

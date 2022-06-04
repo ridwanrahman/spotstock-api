@@ -1,5 +1,6 @@
-from data_loader.models import Person
+from data_loader.models import Person, Fruit, Vegetable
 from api.serializers import PersonSerializer
+
 
 class QuestionOne:
 
@@ -9,7 +10,7 @@ class QuestionOne:
         }
         id = company_index
         people_working_in_company = Person.objects.filter(company_id__index=id)
-        if not people_working_in_company:
+        if people_working_in_company is None:
             return {
                 'response': f"No employees found for company index: {company_index}"
             }
@@ -20,12 +21,18 @@ class QuestionOne:
 class QuestionTwo:
 
     def get_response(self, request):
-        person1_obj = Person.objects.get(
+        person1_obj = Person.objects.filter(
             index=int(request.query_params.get('person1'))
-        )
-        person2_obj = Person.objects.get(
+        ).first()
+        person2_obj = Person.objects.filter(
             index=int(request.query_params.get('person2'))
-        )
+        ).first()
+
+        if person1_obj is None or person2_obj is None:
+            return {
+                'error': 'person does not exist'
+            }
+
         color = 'brown'
         final_list = []
         for i in Person.objects.raw(
@@ -55,3 +62,30 @@ class QuestionTwo:
         ]
         return final_response
 
+
+class QuestionThree:
+    def get_response(self, person_index):
+        person_obj = Person.objects.filter(
+            index=int(person_index)
+        ).first()
+
+        if person_obj is None:
+            return {'error': 'Person does not exist'}
+
+        fruits_list = []
+        vegetables_list = []
+        fruits = Fruit.objects.filter(person=person_obj)
+        if fruits:
+            fruits_list = [fruit.fruit_name for fruit in fruits]
+
+        vegetables = Vegetable.objects.filter(person=person_obj)
+        if vegetables:
+            vegetables_list = [vege.vegetable_name for vege in vegetables]
+
+        final_response = {
+            "username": person_obj.name,
+            "age": person_obj.age,
+            "fruits": fruits_list,
+            "vegetables": vegetables_list
+        }
+        return final_response
