@@ -1,5 +1,15 @@
 # Description
 
+##Proces of the project
+### Data Loading
+1. The files are loaded according to their size. The largest file is kept at the end of the list.
+2. According to the file names, different wrapper classes are called which validate the file and save the data to their table. To load files with other data, please keep the names
+the same as the ones in the resource folder.
+3. Person is the largest file as it has person related to company and food and with other people as friends.
+4. Fruits and vegetables json files were not given in the email so I went ahead and made my own.
+5. So, company, fruits and vegetables are checked (validation) and saved first. Then person is loaded and their relations are saved.
+6. Rows that aren't valid are skipped.
+
 # Requirements
 1. Pycharm (VScode can be used too, but the virtualenv setup can be different)
 2. Django
