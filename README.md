@@ -168,8 +168,8 @@ with the int index of the person from people.json.
 
 # Running the tests
 There are two test files available. To run them, please run
-1. python manage.py test data_loader - This will run the test available in data_loader
-2. python manage.py test api - This tests the 3 questions that was in the email
+1. `python manage.py test data_loader` - This will run the test available in data_loader
+2. `python manage.py test api` - This tests the 3 questions that was in the email
 
 # Assumptions
 1. Fruits and vegetables json file was not provided so I went ahead and made my own
