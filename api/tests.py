@@ -186,9 +186,7 @@ class TestCommonPeople(TestCase):
         wrapper = Wrapper()
         file_wrapper = wrapper.create('people')
 
-        # record contains 4 people, all friends with each other
-        # and two have brown eyes (index=1, index=3)
-        # person index 0 & 2 should return person index 3 who has brown eye
+        # using data from people.json file. just the first 3 records
         records = [
             {
                 "_id": "595eeb9b96d80a5bc7afb106",
