@@ -86,9 +86,9 @@ WSGI_APPLICATION = 'stockspot.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', # <-- UPDATED line
-        'NAME': 'mytestdb',                 # <-- UPDATED line
-        'USER': 'ridwan',                     # <-- UPDATED line
-        'PASSWORD': 'ridwan',              # <-- UPDATED line
+        'NAME': 'django_database',                 # <-- UPDATED line
+        'USER': 'ridwan_another',                     # <-- UPDATED line
+        'PASSWORD': 'password',              # <-- UPDATED line
         'HOST': 'localhost',                # <-- UPDATED line
         'PORT': '3306',
     }

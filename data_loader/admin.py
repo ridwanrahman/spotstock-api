@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from .models import Company, Person, Fruit, Vegetable, PersonFriend
 
 admin.site.register(Company)

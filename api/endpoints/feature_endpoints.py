@@ -2,7 +2,7 @@ from data_loader.models import Person, Fruit, Vegetable
 from api.serializers import PersonSerializer
 
 
-class QuestionOne:
+class AllCompanyEmployees:
     """
     Given a company, the API needs to return all their employees. Provide the appropriate solution
     if the company does not have any employees.
@@ -10,7 +10,7 @@ class QuestionOne:
 
     def get_response(self, company_index):
         """
-        API to return all the employees of a company.
+        To get all the employees of a company.
         :param company_index: int (company_index)
         :return: serialized person objects
         """
@@ -25,17 +25,21 @@ class QuestionOne:
         return serializer.data
 
 
-class QuestionTwo:
+class CommonPeople:
     """
     Given 2 people, provide their information (Name, Age, Address, phone) and the
     list of their friends in common which have brown eyes and are still alive.
     """
-    def get_response(self, person_1, person_2):
+    def get_response(self, person_1, person_2) -> dict:
         """
+        Get the two person index, run a query and return the result with the person details
+        and their common friends who have brown eye and are alive
 
-        :param request:
-        :return:
+        :param person_1: int, person_index
+        :param person_2: int, person_index
+        :return: dict
         """
+        # query and load the 2 people
         person1_obj = Person.objects.filter(
             index=person_1
         ).first()
@@ -48,16 +52,24 @@ class QuestionTwo:
                 'error': 'person does not exist'
             }
 
+        # constaint given in the question
         color = 'brown'
+        has_died = 0
+
         final_list = []
-        for i in Person.objects.raw(
+        for person in Person.objects.raw(
             'select ip.id, ip.name from data_loader_person p '
             'join data_loader_personfriend pf on p.id=pf.person_id_id '
             'join data_loader_person ip on ip.id=pf.friend_id_id '
             'where p.name in (%s, %s) '
-            'and ip.eye_color=%s and ip.has_died=0 group by ip.id', [person1_obj.name, person2_obj.name, color]
+            'and ip.eye_color=%s and ip.has_died=%s group by ip.id', [person1_obj.name, person2_obj.name, color, has_died]
         ):
-            final_list.append(i.name)
+            # skip if the result person is the same as the people in the query
+            if person.index in [person1_obj.index, person2_obj.index]:
+                continue
+            final_list.append(person.name)
+
+        # create the response structure
         final_response = [
             {
                 "Name": person1_obj.name,
@@ -78,8 +90,25 @@ class QuestionTwo:
         return final_response
 
 
-class QuestionThree:
-    def get_response(self, person_index):
+class FavoriteFruitsVeges:
+    """
+    Given 1 people, provide a list of fruits and vegetables they like. This endpoint must respect
+    this interface for the output:
+    {
+        "username": "Ahi",
+        "age": "30",
+        "fruits": ["banana", "apple"],
+        "vegetables": ["beetroot", "lettuce"]
+    }
+    """
+    def get_response(self, person_index) -> dict:
+        """
+        Using the person_index, query the person then query the person's favorite fruits
+        and vegetables and return them in a list
+
+        :param person_index:int
+        :return: dict
+        """
         person_obj = Person.objects.filter(
             index=int(person_index)
         ).first()
