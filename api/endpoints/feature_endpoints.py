@@ -72,7 +72,6 @@ class CommonPeople:
                 'where p.name = %s ) t2 on t1.friend_id=t2.friend_id) t3 '
                 'join django_database.data_loader_person per on per.id=t3.id;', [person1_obj.name, color, has_died, person2_obj.name]
             ):
-                # skip if the result person is the same as the people in the query
                 final_list.append(person.name)
         except Exception as e:
             print(e)

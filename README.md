@@ -178,11 +178,8 @@ There are two test files available. To run them, please run
 1. the index field could not be used as primary key as it starts from 0 and
 sql creates records from 1.
 2. Fruits and vegetables json file was not provided so I went ahead and made my own
-3. Question 2 was not clear, if 2 person was given and one of them has brown eyes 
-and is alive, does that mean that person is a common friend? I assumed they are not so
-that person is excluded in the api
-4. To make the project more modular, wrappers were used which were called by the name
+3. To make the project more modular, wrappers were used which were called by the name
 of the file. The main idea was to support more formats of json files. Each new format 
 of file would be added to the wrapper with the file name.
-5. A few test cases were not written but their logic was written. This was due
+4. A few test cases were not written but their logic was written. This was due
 to time constraints (worked on this on a weekend, sorry)
