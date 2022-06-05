@@ -72,7 +72,7 @@ in this readme.
 3. Django restframework
 4. mysql
 5. mysql client
-6. mysql workbench
+6. (Optional) mysql workbench (gui to view data)
 
 # Setup Instructions
 1. First run the setup database
