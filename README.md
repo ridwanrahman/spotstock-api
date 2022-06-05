@@ -111,7 +111,7 @@ tests that depend on the test database so this command should be run:
 The process for postgres should be more or similar. Also need to change the database
 config to postgres in settings.
 
-##Install requirements
+## Install requirements
 1. Install virtualenv by running `virtualenv venv`
 2. activate virtualenv (source venv/bin/activate)
 * While developing, conda env was used with pycharm
