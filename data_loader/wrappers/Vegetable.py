@@ -1,6 +1,8 @@
 import json
+
 from jsonschema import validate
 from jsonschema import ValidationError
+
 from data_loader.wrappers.Wrapper import Wrapper
 from data_loader.models import Vegetable
 
@@ -19,22 +21,22 @@ VEGETABLE_SCHEMA = {
 @Wrapper.register_subclass('vegetables')
 class VegetableWrapper(Wrapper):
     """
-    This class will validate and save vegetables
+    VegetableWrapper class will validate and save vegetables
     """
     def __init__(self):
         pass
 
-    def handle_record(self, index, record):
+    def handle_record(self, index, record) -> None:
         """
-        This function will handle each record in the json file, validate and save them
+        This function will handle each record in the json file, validate and save the records
 
         :param index: int
         :param record: dict
-        :return:
+        :return: None
         """
         try:
+            # validate with the schema given above
             validate(instance=record, schema=VEGETABLE_SCHEMA)
-            # #TODO: change variable name ehrer
             vegetable_exists = Vegetable.objects.filter(vegetable_name=record['name']).all()
             if vegetable_exists:
                 return
@@ -47,8 +49,13 @@ class VegetableWrapper(Wrapper):
         except Exception as e:
             print(e)
 
-    def handle_file_upload(self, file_path):
-
+    def handle_file_upload(self, file_path) -> None:
+        """
+        Open the file using the file path, read it as json records and send each record
+        to handle_record function
+        :param file_path: string
+        :return: None
+        """
         with open(file_path) as file:
             data = json.load(file)
             for index, record in enumerate(data):

@@ -18,15 +18,25 @@ FRUIT_SCHEMA = {
 
 @Wrapper.register_subclass('fruits')
 class FruitWrapper(Wrapper):
+    """
+    FruitWrapper class will validate and save fruits
+    """
     def __init__(self):
         pass
 
-    def handle_record(self, index, record):
+    def handle_record(self, index, record) -> None:
+        """
+         This function will handle each record in the json file, validate and save the records
+
+        :param index: int
+        :param record: json
+        :return: None
+        """
         try:
             validate(instance=record, schema=FRUIT_SCHEMA)
 
-            if_fruit_exists = Fruit.objects.filter(fruit_name=record['name']).all()
-            if if_fruit_exists:
+            fruit_exists = Fruit.objects.filter(fruit_name=record['name']).all()
+            if fruit_exists:
                 return
 
             fruit = Fruit()
@@ -37,8 +47,13 @@ class FruitWrapper(Wrapper):
         except Exception as e:
             print(e)
 
-    def handle_file_upload(self, file_path):
-
+    def handle_file_upload(self, file_path) -> None:
+        """
+        Open the file using the file path, read it as json records and send each record
+        to handle_record function
+        :param file_path: string
+        :return: None
+        """
         with open(file_path) as file:
             data = json.load(file)
             for index, record in enumerate(data):
