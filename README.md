@@ -176,5 +176,6 @@ There are two test files available. To run them, please run
 2. Question 2 was not clear, if 2 person was given and one of them has brown eyes 
 and is alive, does that mean that person is a common friend? I assumed they are not so
 that person is excluded in the api
-3. To make the project more module, wrappers were used which were called by the name
-of the file. 
+3. To make the project more modular, wrappers were used which were called by the name
+of the file. The main idea was to support more formats of json files. Each new format 
+of file would be added to the wrapper with the file name.
