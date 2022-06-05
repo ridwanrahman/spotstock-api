@@ -8,7 +8,8 @@ def custom_exception_handler(exc, context):
     handlers = {
         'ValidationError': _handle_generic_error,
         'Http404': _handle_generic_error,
-        'TypeError': _handle_generic_error
+        'TypeError': _handle_generic_error,
+        'MethodNotAllowed': _handle_generic_error
     }
     response = exception_handler(exc, context)
     exception_class = exc.__class__.__name__

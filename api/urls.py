@@ -17,8 +17,8 @@ router.register(r'vegetable', VegetableViewSet)
 # urls for the different apis
 urlpatterns = [
     path('', include(router.urls)),
-    path('all_company_employees/<int:company_index>', get_all_company_employees),
-    path('common_people', common_people),
-    path('person_liked_fruits_veges/<int:person_index>', get_person_liked_fruits_veges),
+    path('all_company_employees/<int:company_index>', get_all_company_employees, name='all_company_employees'),
+    path('common_people', common_people, name='common_people'),
+    path('person_liked_fruits_veges/<int:person_index>', get_person_liked_fruits_veges, name='person_liked_fruits_veges'),
 ]
 urlpatterns += router.urls

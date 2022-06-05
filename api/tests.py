@@ -1,10 +1,52 @@
 import json
 from django.test import TestCase
 
+from rest_framework.test import APITestCase
+from rest_framework.test import APIRequestFactory
+
 from data_loader.models import Company, Person, Fruit, Vegetable
 from data_loader.wrappers.Wrapper import Wrapper
 
 from api.endpoints.feature_endpoints import AllCompanyEmployees, CommonPeople, FavoriteFruitsVeges
+
+from django.urls import reverse
+
+
+class TestAPI(APITestCase):
+    """
+    Test the individual APIs
+    """
+    def setUp(self) -> None:
+        self.company = Company.objects.create(
+            index=10,
+            company='test company'
+        )
+        self.person = Person.objects.create(
+            index=100,
+            guid='test',
+            name='test',
+            age=50,
+            address='test',
+            phone='test',
+            eye_color='test',
+            has_died=True,
+            company_id=self.company
+        )
+
+    def test_get_company_employees(self):
+        url = reverse("all_company_employees", kwargs={"company_index": self.company.index})
+        response = self.client.get(url)
+        resp_json = json.loads(response.content)
+        assert (resp_json[0]['name'] == self.person.name)
+
+    def test_post_company_employees(self):
+        """
+        Since only get request is allowed, this will return 'Method not allowed' error which is 405
+        """
+        url = reverse("all_company_employees", kwargs={"company_index": self.company.index})
+        response = self.client.post(url)
+        assert (response.status_code == 405)
+
 
 
 class TestAllCompanyEmployees(TestCase):
