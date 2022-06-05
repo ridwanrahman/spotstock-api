@@ -135,7 +135,8 @@ with the most data, so companies, fruits and vegetables are loaded first.
 2. Run `python manage.py runserver' to keep the server running
 3. Go to url `localhost:8000`. It will show some available apis. The data that was input
 can be viewed there.
-4. Recommeded way to access the APIs is through postman
+4. Recommended way to access the APIs is through postman
+5. To get the correct error messages, please change `debug=False` in settings.
 
 ##Accessing the APIs
 1. First question was
