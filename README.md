@@ -43,7 +43,7 @@ run the test files.
 2. activate virtualenv (source venv/bin/activate)
 3. run `pip install -r requirements.txt`
 4. Migrate the database by running `python manage.py migrate`
-5. You can create a superuser too by running `python manage.py createsuperuser`
+5. (Optional) You can create a superuser too by running `python manage.py createsuperuser`
 
 ## Load data
 1. It was assumed that the file names that will be used with this project are

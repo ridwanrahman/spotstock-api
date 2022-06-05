@@ -57,6 +57,8 @@ class QuestionTwo:
             'where p.name in (%s, %s) '
             'and ip.eye_color=%s and ip.has_died=0 group by ip.id', [person1_obj.name, person2_obj.name, color]
         ):
+            #TODO: if same name as either person1 or person2 then skip
+            # also keep it as a description
             final_list.append(i.name)
         final_response = [
             {

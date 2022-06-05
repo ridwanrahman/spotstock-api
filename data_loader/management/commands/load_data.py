@@ -37,6 +37,7 @@ class Command(BaseCommand):
 
     def load_file(self, file_name):
         if file_name not in self.wrapper_subclasses:
+            #TODO: fix this error message
             self.stdout.write(self.style.ERROR(f'******* Only file names with people and company is supported *******'))
             return None
         file_wrapper = self.wrapper.create(file_name)

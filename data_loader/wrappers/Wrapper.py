@@ -1,4 +1,5 @@
 class Wrapper(object):
+    #TODO: write a docstring here to explain what this does
     subclasses = {}
 
     def __init__(self):

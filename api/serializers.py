@@ -11,7 +11,7 @@ class CompanySerializer(serializers.ModelSerializer):
 class PersonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Person
-        fields = ['id', 'index', 'guid', 'name', 'age', 'address', 'phone', 'eye_color', 'has_died', 'company_id']
+        fields = ['index', 'name']
 
 
 class PersonFriendSerializer(serializers.ModelSerializer):

@@ -24,7 +24,7 @@ class VegetableWrapper(Wrapper):
     def handle_record(self, index, record):
         try:
             validate(instance=record, schema=VEGETABLE_SCHEMA)
-
+            # #TODO: change variable name ehrer
             if_vegetable_exists = Vegetable.objects.filter(vegetable_name=record['name']).all()
             if if_vegetable_exists:
                 return
