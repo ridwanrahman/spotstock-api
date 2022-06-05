@@ -184,3 +184,5 @@ that person is excluded in the api
 4. To make the project more modular, wrappers were used which were called by the name
 of the file. The main idea was to support more formats of json files. Each new format 
 of file would be added to the wrapper with the file name.
+5. A few test cases were not written but their logic was written. This was due
+to time constraints (worked on this on a weekend, sorry)

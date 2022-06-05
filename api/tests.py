@@ -33,13 +33,13 @@ class TestAPI(APITestCase):
             company_id=self.company
         )
 
-    def test_get_company_employees(self):
+    def test_get_company_employees_api(self):
         url = reverse("all_company_employees", kwargs={"company_index": self.company.index})
         response = self.client.get(url)
         resp_json = json.loads(response.content)
         assert (resp_json[0]['name'] == self.person.name)
 
-    def test_post_company_employees(self):
+    def test_post_company_employees_api(self):
         """
         Since only get request is allowed, this will return 'Method not allowed' error which is 405
         """
@@ -47,6 +47,18 @@ class TestAPI(APITestCase):
         response = self.client.post(url)
         assert (response.status_code == 405)
 
+    def test_common_people_api(self):
+        # Create people with their friends,
+        # Make at least one friend have brown eyes and alive
+        # This should return the common friend
+        # A similar test is given below
+        pass
+
+    def test_person_liked_fruits_veges_api(self):
+        # create person with favorite food including fruits and veges
+        # get it using this api then assert
+        # similar test is provided below
+        pass
 
 
 class TestAllCompanyEmployees(TestCase):
