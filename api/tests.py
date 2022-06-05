@@ -1,17 +1,27 @@
 import json
 from django.test import TestCase
 
-
 from data_loader.models import Company, Person, Fruit, Vegetable
-from api.endpoints.question_endpoints import QuestionOne, QuestionTwo, QuestionThree
+from api.endpoints.feature_endpoints import AllCompanyEmployees, CommonPeople, FavoriteFruitsVeges
 from data_loader.wrappers.Wrapper import Wrapper
 
 
-class TestQuestionOne(TestCase):
+class TestAllCompanyEmployees(TestCase):
 
-    def test_question_one(self):
-        #TODO: make this test smaller by seprating to smaller tests
+    def test_no_company_employees(self):
+        """
+        Test to determine no employees exist for a random company_index
+        """
+        random_company_index = 19
+        question_one = AllCompanyEmployees()
+        response = question_one.get_response(random_company_index)
+        resp_json = json.loads(json.dumps(response))
+        assert (resp_json['response'] == f'No employees found for company index: {random_company_index}')
 
+    def test_all_company_employees(self):
+        """
+        Test to determine if company has employee
+        """
         # add a company
         company = Company(
             index=-10,
@@ -40,51 +50,24 @@ class TestQuestionOne(TestCase):
         )
         person.save()
 
-        # add second person and also relate to first company
-        person2 = Person()
-        person2.index = -11
-        person2.guid = 'test2'
-        person2.name = 'test2'
-        person2.age = 50
-        person2.address = 'test2'
-        person2.phone = 'test2'
-        person2.eye_color = 'test2'
-        person2.has_died = False
-        person2.company_id = company
-        person2.save()
-
         # assert the first user was added to first company
-        question_one = QuestionOne()
+        question_one = AllCompanyEmployees()
         response = question_one.get_response(company.index)
         resp_json = json.loads(json.dumps(response))
-        assert(resp_json[0]['name'] == 'test')
-        # assert (resp_json[0]['company_id'] == 1)
-
-        # assert that the seonc company has no employees
-        question_one_2 = QuestionOne()
-        response_2 = question_one_2.get_response(company2.index)
-        resp_json_2 = json.loads(json.dumps(response_2))
-        assert (resp_json_2['response'] == 'No employees found for company index: -20')
-
-        # move person2 to second company and assert second company to see if their employee is
-        # person2
-        person2.company_id = company2
-        person2.save()
-        question_one_2 = QuestionOne()
-        response_2 = question_one_2.get_response(company2.index)
-        resp_json_2 = json.loads(json.dumps(response_2))
-        assert (resp_json_2[0]['name'] == 'test2')
-        # assert (resp_json_2[0]['company_id'] == 2)
+        assert (resp_json[0]['name'] == 'test')
 
 
-class TestQuestionTwo(TestCase):
+class TestCommonPeople(TestCase):
 
-    def test_question_two(self):
+    def test_person_doest_exist(self):
+        company = Company(
+            index=-10,
+            company='test company'
+        )
+        company.save()
+
         wrapper = Wrapper()
         file_wrapper = wrapper.create('people')
-
-        # record contains 4 peope, all friends with each other
-        # and two have brown eyes
         records = [
             {
                 "index": 0,
@@ -93,7 +76,66 @@ class TestQuestionTwo(TestCase):
                 "age": 61,
                 "eyeColor": "blue",
                 "name": "TEST USER_1",
-                "company_id": 58,
+                "company_id": company.index,
+                "email": "carmellalambert@earthmark.com",
+                "phone": "+1 (910) 567-3630",
+                "address": "628 Sumner Place, Sperryville, American Samoa, 9819",
+                "friends": [
+                    {
+                        "index": 1
+                    }
+                ],
+                "favouriteFood": [],
+            },
+            {
+                "index": 1,
+                "guid": "5e71dc5d-61c0-4f3b-8b92-d77310fa43",
+                "has_died": True,
+                "age": 61,
+                "eyeColor": "brown",
+                "name": "TEST USER_2",
+                "company_id": company.index,
+                "email": "carmellalambert@earthmark.com",
+                "phone": "+1 (910) 567-3630",
+                "address": "628 Sumner Place, Sperryville, American Samoa, 9819",
+                "friends": [
+                    {
+                        "index": 0
+                    }
+                ],
+                "favouriteFood": [],
+            },
+        ]
+        for index, record in enumerate(records):
+            file_wrapper.handle_record(index, record)
+        file_wrapper.friends_fillup()
+
+        test_common_peopple = CommonPeople()
+        response = test_common_peopple.get_response(0, 3)
+        assert (response['error'] == 'person does not exist')
+
+    def test_common_people(self):
+        company = Company(
+            index=-10,
+            company='test company'
+        )
+        company.save()
+
+        wrapper = Wrapper()
+        file_wrapper = wrapper.create('people')
+
+        # record contains 4 peope, all friends with each other
+        # and two have brown eyes (index=1, index=3)
+        # person index 0 & 2 should return person index 3 who has brown eye
+        records = [
+            {
+                "index": 0,
+                "guid": "5e71dc5d-61c0-4f3b-8b92-d77310c7fa43",
+                "has_died": True,
+                "age": 61,
+                "eyeColor": "blue",
+                "name": "TEST USER_1",
+                "company_id": company.index,
                 "email": "carmellalambert@earthmark.com",
                 "phone": "+1 (910) 567-3630",
                 "address": "628 Sumner Place, Sperryville, American Samoa, 9819",
@@ -117,7 +159,7 @@ class TestQuestionTwo(TestCase):
                 "age": 61,
                 "eyeColor": "brown",
                 "name": "TEST USER_2",
-                "company_id": 58,
+                "company_id": company.index,
                 "email": "carmellalambert@earthmark.com",
                 "phone": "+1 (910) 567-3630",
                 "address": "628 Sumner Place, Sperryville, American Samoa, 9819",
@@ -141,7 +183,7 @@ class TestQuestionTwo(TestCase):
                 "age": 61,
                 "eyeColor": "blue",
                 "name": "TEST USER_3",
-                "company_id": 58,
+                "company_id": company.index,
                 "email": "carmellalambert@earthmark.com",
                 "phone": "+1 (910) 567-3630",
                 "address": "628 Sumner Place, Sperryville, American Samoa, 9819",
@@ -165,7 +207,7 @@ class TestQuestionTwo(TestCase):
                 "age": 61,
                 "eyeColor": "brown",
                 "name": "TEST USER_4",
-                "company_id": 58,
+                "company_id": company.index,
                 "email": "carmellalambert@earthmark.com",
                 "phone": "+1 (910) 567-3630",
                 "address": "628 Sumner Place, Sperryville, American Samoa, 9819",
@@ -189,15 +231,116 @@ class TestQuestionTwo(TestCase):
             file_wrapper.handle_record(index, record)
         file_wrapper.friends_fillup()
 
-        question_two = QuestionTwo()
-        response = question_two.get_response(0, 1)
+        test_common_peopple = CommonPeople()
+        response = test_common_peopple.get_response(0, 2)
         common_friends = response[2]['common_friends']
         assert (common_friends[0] == 'TEST USER_4')
 
+    def test_common_people_same_query_person(self):
+        """
+        Querying with person 0 and person 1. Person 1 has brown eyes and is alive. They are friends with each other.
+        This test should return an empty array as they don't have common friends with brown eyes and is alive.
+        """
+        company = Company(
+            index=-10,
+            company='test company'
+        )
+        company.save()
 
-class TestQuestionThree(TestCase):
+        wrapper = Wrapper()
+        file_wrapper = wrapper.create('people')
 
-    def test_question_three(self):
+        # record contains 3 people, all friends with each other
+        # and one has brown eyes (index=1) and is alive
+        # person_index=0 & person_index=1 should not return any common friends who has brown eyes and is alive
+        # as person_index=1 is in the query
+        records = [
+            {
+                "index": 0,
+                "guid": "5e71dc5d-61c0-4f3b-8b92-d77310c7fa43",
+                "has_died": True,
+                "age": 61,
+                "eyeColor": "blue",
+                "name": "TEST USER_1",
+                "company_id": company.index,
+                "email": "carmellalambert@earthmark.com",
+                "phone": "+1 (910) 567-3630",
+                "address": "628 Sumner Place, Sperryville, American Samoa, 9819",
+                "friends": [
+                    {
+                        "index": 1
+                    },
+                    {
+                        "index": 2
+                    }
+                ],
+                "favouriteFood": [],
+            },
+            {
+                "index": 1,
+                "guid": "5e71dc5d-61c0-4f3b-8b92-d77310fa43",
+                "has_died": False,
+                "age": 61,
+                "eyeColor": "brown",
+                "name": "TEST USER_2",
+                "company_id": company.index,
+                "email": "carmellalambert@earthmark.com",
+                "phone": "+1 (910) 567-3630",
+                "address": "628 Sumner Place, Sperryville, American Samoa, 9819",
+                "friends": [
+                    {
+                        "index": 0
+                    },
+                    {
+                        "index": 2
+                    }
+                ],
+                "favouriteFood": [],
+            },
+            {
+                "index": 2,
+                "guid": "5e71dc5d-61c0-4f3b",
+                "has_died": True,
+                "age": 61,
+                "eyeColor": "blue",
+                "name": "TEST USER_3",
+                "company_id": company.index,
+                "email": "carmellalambert@earthmark.com",
+                "phone": "+1 (910) 567-3630",
+                "address": "628 Sumner Place, Sperryville, American Samoa, 9819",
+                "friends": [
+                    {
+                        "index": 0
+                    },
+                    {
+                        "index": 1
+                    }
+                ],
+                "favouriteFood": [],
+            },
+        ]
+
+        # add the 4 people and their friends
+        for index, record in enumerate(records):
+            file_wrapper.handle_record(index, record)
+        file_wrapper.friends_fillup()
+
+        test_common_peopple = CommonPeople()
+        response = test_common_peopple.get_response(0, 1)
+        common_friends = response[2]['common_friends']
+        assert (len(common_friends) == 0)
+
+
+class TestFavoriteFruitsVeges(TestCase):
+
+    def test_person_fav_fruits_veges(self):
+        # add a company
+        company = Company(
+            index=-10,
+            company='test company'
+        )
+        company.save()
+
         # add a fruit
         fruit = Fruit()
         fruit.fruit_name = "orange"
@@ -219,7 +362,7 @@ class TestQuestionThree(TestCase):
             "age": 61,
             "eyeColor": "blue",
             "name": "TEST USER",
-            "company_id": 58,
+            "company_id": company.index,
             "email": "carmellalambert@earthmark.com",
             "phone": "+1 (910) 567-3630",
             "address": "628 Sumner Place, Sperryville, American Samoa, 9819",
@@ -231,8 +374,8 @@ class TestQuestionThree(TestCase):
           }
         file_wrapper.handle_record(index, record)
 
-        question_three = QuestionThree()
-        response = question_three.get_response(record['index'])
+        test_fav_fruits_veges = FavoriteFruitsVeges()
+        response = test_fav_fruits_veges.get_response(record['index'])
 
         # assert if fruits and vegetables are in the right list
         assert (response['username'] == 'TEST USER')

@@ -3,8 +3,8 @@ from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from api.endpoints.question_endpoints import (AllCompanyEmployees,
-                                              CommonPeople, QuestionThree)
+from api.endpoints.feature_endpoints import (AllCompanyEmployees,
+                                             CommonPeople, FavoriteFruitsVeges)
 
 
 def handler404(request, exception):
@@ -53,7 +53,14 @@ def common_people(request) -> dict:
 
 
 @api_view(['GET'])
-def question_three(request, person_index):
-    three = QuestionThree()
-    response = three.get_response(person_index)
+def get_person_liked_fruits_veges(request, person_index):
+    """
+    Calls the business logic with a person_index to load a list of their favorite fruits and veges
+
+    :param request: drf request
+    :param person_index: int
+    :return:
+    """
+    fav_fruits_veges_obj = FavoriteFruitsVeges()
+    response = fav_fruits_veges_obj.get_response(person_index)
     return Response(response)

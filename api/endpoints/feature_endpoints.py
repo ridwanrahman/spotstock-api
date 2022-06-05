@@ -30,12 +30,14 @@ class CommonPeople:
     Given 2 people, provide their information (Name, Age, Address, phone) and the
     list of their friends in common which have brown eyes and are still alive.
     """
-    def get_response(self, person_1, person_2):
+    def get_response(self, person_1, person_2) -> dict:
         """
+        Get the two person index, run a query and return the result with the person details
+        and their common friends who have brown eye and are alive
 
         :param person_1: int, person_index
         :param person_2: int, person_index
-        :return:
+        :return: dict
         """
         # query and load the 2 people
         person1_obj = Person.objects.filter(
@@ -88,8 +90,25 @@ class CommonPeople:
         return final_response
 
 
-class QuestionThree:
-    def get_response(self, person_index):
+class FavoriteFruitsVeges:
+    """
+    Given 1 people, provide a list of fruits and vegetables they like. This endpoint must respect
+    this interface for the output:
+    {
+        "username": "Ahi",
+        "age": "30",
+        "fruits": ["banana", "apple"],
+        "vegetables": ["beetroot", "lettuce"]
+    }
+    """
+    def get_response(self, person_index) -> dict:
+        """
+        Using the person_index, query the person then query the person's favorite fruits
+        and vegetables and return them in a list
+
+        :param person_index:int
+        :return: dict
+        """
         person_obj = Person.objects.filter(
             index=int(person_index)
         ).first()
