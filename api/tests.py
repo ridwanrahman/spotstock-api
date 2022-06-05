@@ -2,8 +2,9 @@ import json
 from django.test import TestCase
 
 from data_loader.models import Company, Person, Fruit, Vegetable
-from api.endpoints.feature_endpoints import AllCompanyEmployees, CommonPeople, FavoriteFruitsVeges
 from data_loader.wrappers.Wrapper import Wrapper
+
+from api.endpoints.feature_endpoints import AllCompanyEmployees, CommonPeople, FavoriteFruitsVeges
 
 
 class TestAllCompanyEmployees(TestCase):
@@ -60,6 +61,9 @@ class TestAllCompanyEmployees(TestCase):
 class TestCommonPeople(TestCase):
 
     def test_person_doest_exist(self):
+        """
+        Add people then query by a wrong person_index to see person does not exist
+        """
         company = Company(
             index=-10,
             company='test company'
@@ -115,6 +119,10 @@ class TestCommonPeople(TestCase):
         assert (response['error'] == 'person does not exist')
 
     def test_common_people(self):
+        """
+        Add people then use business logic to see if the right common friend is returned with brown eyes
+        and is alive.
+        """
         company = Company(
             index=-10,
             company='test company'
@@ -124,7 +132,7 @@ class TestCommonPeople(TestCase):
         wrapper = Wrapper()
         file_wrapper = wrapper.create('people')
 
-        # record contains 4 peope, all friends with each other
+        # record contains 4 people, all friends with each other
         # and two have brown eyes (index=1, index=3)
         # person index 0 & 2 should return person index 3 who has brown eye
         records = [
@@ -334,6 +342,10 @@ class TestCommonPeople(TestCase):
 class TestFavoriteFruitsVeges(TestCase):
 
     def test_person_fav_fruits_veges(self):
+        """
+        Add fruit and vegetable, using a person record, relate those fruit and vegetable to
+        the person, call the business logic and assert to see if the person has those fruits and veges
+        """
         # add a company
         company = Company(
             index=-10,
