@@ -138,7 +138,7 @@ can be viewed there.
 4. Recommended way to access the APIs is through postman
 5. To get the correct error messages, please change `debug=False` in settings.
 
-##Accessing the APIs
+## Accessing the APIs
 1. First question was
 
 `Given a company, the API needs to return all their employees. Provide the appropriate solution if the company does not have any employees.`
@@ -174,10 +174,12 @@ There are two test files available. To run them, please run
 2. `python manage.py test api` - This tests the 3 questions that was in the email
 
 # Assumptions
-1. Fruits and vegetables json file was not provided so I went ahead and made my own
-2. Question 2 was not clear, if 2 person was given and one of them has brown eyes 
+1. the index field could not be used as primary key as it starts from 0 and
+sql creates records from 1.
+2. Fruits and vegetables json file was not provided so I went ahead and made my own
+3. Question 2 was not clear, if 2 person was given and one of them has brown eyes 
 and is alive, does that mean that person is a common friend? I assumed they are not so
 that person is excluded in the api
-3. To make the project more modular, wrappers were used which were called by the name
+4. To make the project more modular, wrappers were used which were called by the name
 of the file. The main idea was to support more formats of json files. Each new format 
 of file would be added to the wrapper with the file name.
