@@ -18,15 +18,25 @@ VEGETABLE_SCHEMA = {
 
 @Wrapper.register_subclass('vegetables')
 class VegetableWrapper(Wrapper):
+    """
+    This class will validate and save vegetables
+    """
     def __init__(self):
         pass
 
     def handle_record(self, index, record):
+        """
+        This function will handle each record in the json file, validate and save them
+
+        :param index: int
+        :param record: dict
+        :return:
+        """
         try:
             validate(instance=record, schema=VEGETABLE_SCHEMA)
             # #TODO: change variable name ehrer
-            if_vegetable_exists = Vegetable.objects.filter(vegetable_name=record['name']).all()
-            if if_vegetable_exists:
+            vegetable_exists = Vegetable.objects.filter(vegetable_name=record['name']).all()
+            if vegetable_exists:
                 return
 
             vegetable = Vegetable()
