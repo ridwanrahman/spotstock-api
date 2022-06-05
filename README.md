@@ -170,3 +170,11 @@ with the int index of the person from people.json.
 There are two test files available. To run them, please run
 1. python manage.py test data_loader - This will run the test available in data_loader
 2. python manage.py test api - This tests the 3 questions that was in the email
+
+# Assumptions
+1. Fruits and vegetables json file was not provided so I went ahead and made my own
+2. Question 2 was not clear, if 2 person was given and one of them has brown eyes 
+and is alive, does that mean that person is a common friend? I assumed they are not so
+that person is excluded in the api
+3. To make the project more module, wrappers were used which were called by the name
+of the file. 
