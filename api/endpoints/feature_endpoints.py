@@ -61,16 +61,16 @@ class CommonPeople:
             for person in Person.objects.raw(
                 'select per.id, per.name from '
                 '(select t1.id as skip, t1.friend_id as id from '
-                '(SELECT pf.id as id, pf.friend_id_id as friend_id FROM django_database.data_loader_person p '
-                'join django_database.data_loader_personfriend pf on pf.person_id_id=p.id '
-                'join django_database.data_loader_person dpl on dpl.id=pf.friend_id_id '
+                '(SELECT pf.id as id, pf.friend_id_id as friend_id FROM data_loader_person p '
+                'join data_loader_personfriend pf on pf.person_id_id=p.id '
+                'join data_loader_person dpl on dpl.id=pf.friend_id_id '
                 'where p.name = %s and dpl.eye_color=%s and dpl.has_died=%s ) t1 '
                 'join '
-                '(SELECT pf.id as id, pf.friend_id_id as friend_id FROM django_database.data_loader_person p '
-                'join django_database.data_loader_personfriend pf on pf.person_id_id=p.id '
-                'join django_database.data_loader_person dpl on dpl.id=pf.friend_id_id '
+                '(SELECT pf.id as id, pf.friend_id_id as friend_id FROM data_loader_person p '
+                'join data_loader_personfriend pf on pf.person_id_id=p.id '
+                'join data_loader_person dpl on dpl.id=pf.friend_id_id '
                 'where p.name = %s ) t2 on t1.friend_id=t2.friend_id) t3 '
-                'join django_database.data_loader_person per on per.id=t3.id;', [person1_obj.name, color, has_died, person2_obj.name]
+                'join data_loader_person per on per.id=t3.id;', [person1_obj.name, color, has_died, person2_obj.name]
             ):
                 final_list.append(person.name)
         except Exception as e:

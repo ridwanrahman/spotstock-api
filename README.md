@@ -94,6 +94,7 @@ To check if user has been created, please run:
 
 Create a new database:
 
+
 `CREATE DATABASE db_name;`
 
 Need to grant privileges to the user for the database:
