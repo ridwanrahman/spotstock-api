@@ -82,7 +82,8 @@ in this readme.
 
 ## Setup database
 1. Make sure mysql client is installed. If not run: ``arch -x86_64 brew install mysql``. this is for macbook m1.
-This is needed for mysqlclient to work with mysql database.
+This is needed for mysqlclient to work with mysql database (in virtualenv). Otherwise might
+throw an error as pip install command installs mysqlclient that is used by the python project.
 2. Create a new user in mysql to use with this project and grant privileges: 
 
 `CREATE USER '<user_name>'@'localhost' IDENTIFIED BY 'password';`
