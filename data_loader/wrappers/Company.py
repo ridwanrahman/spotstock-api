@@ -37,10 +37,12 @@ class CompanyWrapper(Wrapper):
         :return:
         """
         try:
+            # validate the record with the schema above
             validate(instance=record, schema=COMPANY_SCHEMA)
 
-            if_company_exists = Company.objects.filter(index=record['index']).all()
-            if if_company_exists:
+            # check if same person exists to avoid duplicates
+            company_exists = Company.objects.filter(index=record['index']).all()
+            if company_exists:
                 return
 
             company = Company()

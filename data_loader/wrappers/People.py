@@ -144,10 +144,12 @@ class PeopleWrapper(Wrapper):
         :return: None
         """
         try:
+            # validate the record with the schema above
             validate(instance=record, schema=PERSON_SCHEMA)
 
-            if_guid_exists = Person.objects.filter(guid=(record['guid'])).all()
-            if if_guid_exists:
+            # check if same person exists to avoid duplicates
+            guid_exists = Person.objects.filter(guid=(record['guid'])).all()
+            if guid_exists:
                 return
             person = Person()
             person.index = record['index']

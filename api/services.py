@@ -3,7 +3,8 @@ from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from api.endpoints.question_endpoints import QuestionOne, QuestionTwo, QuestionThree
+from api.endpoints.question_endpoints import (AllCompanyEmployees,
+                                              CommonPeople, QuestionThree)
 
 
 def handler404(request, exception):
@@ -15,14 +16,27 @@ def handler404(request, exception):
 
 
 @api_view(['GET'])
-def question_one(request, company_index):
-    one = QuestionOne()
-    response = one.get_response(company_index)
+def get_all_company_employees(request, company_index) -> dict:
+    """
+    Calls the business logic class with the company_index and returns the company's employees
+
+    :param request: drf request
+    :param company_index: int
+    :return: dict
+    """
+    all_company_employees = AllCompanyEmployees()
+    response = all_company_employees.get_response(company_index)
     return Response(response)
 
 
 @api_view(['GET'])
-def question_two(request):
+def common_people(request) -> dict:
+    """
+    Calls the business logic class with the 2 people's index and returns their information and common friend
+
+    :param request drf request:
+    :return: dict
+    """
     try:
         person_1_index = int(request.query_params.get('person1'))
         person_2_index = int(request.query_params.get('person2'))
@@ -30,8 +44,8 @@ def question_two(request):
         if person_1_index is None or person_2_index is None:
             raise ValueError("Error")
 
-        two = QuestionTwo()
-        response = two.get_response(person_1_index, person_2_index)
+        common_people_obj = CommonPeople()
+        response = common_people_obj.get_response(person_1_index, person_2_index)
         return Response(response)
     except Exception as e:
         print(e)

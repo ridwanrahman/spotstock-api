@@ -4,7 +4,7 @@ from rest_framework import routers
 
 from api.endpoints.viewsets import (CompanyViewSet, PersonFriendViewSet,
                                         PersonViewSet, FruitViewSet, VegetableViewSet)
-from .services import question_one, question_two, question_three
+from .services import get_all_company_employees, common_people, question_three
 
 
 router = routers.DefaultRouter()
@@ -16,8 +16,8 @@ router.register(r'vegetable', VegetableViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('q1/<int:company_index>', question_one),
-    path('q2', question_two),
+    path('all_company_employees/<int:company_index>', get_all_company_employees),
+    path('common_people', common_people),
     path('q3/<int:person_index>', question_three),
 ]
 urlpatterns += router.urls

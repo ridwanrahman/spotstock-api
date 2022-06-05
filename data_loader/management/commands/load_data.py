@@ -12,8 +12,12 @@ from data_loader.wrappers.Wrapper import Wrapper
 BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
 FILE_PATH = Path.joinpath(BASE_DIR, 'resource')
 FILE_LIST = os.listdir(FILE_PATH)
-FILES_SORTED_BY_SIZE = sorted(FILE_LIST,
-                              key=lambda x: os.stat(os.path.join(FILE_PATH, x)).st_size)
+# sort the files according to their size the largest
+# file (people) should be saved last as it contains relations
+# to other tables, hence they need to be filled
+FILES_SORTED_BY_SIZE = sorted(
+    FILE_LIST, key=lambda x: os.stat(os.path.join(FILE_PATH, x)).st_size
+)
 
 
 class Command(BaseCommand):
