@@ -1,9 +1,8 @@
 from rest_framework import viewsets
-from api.serializers import CompanySerializer, PersonSerializer, PersonFriendSerializer, FruitSerializer, \
-    VegetableSerializer
+
+from api.serializers import (CompanySerializer, PersonSerializer, PersonFriendSerializer,
+                             FruitSerializer, VegetableSerializer)
 from data_loader.models import Company, Person, PersonFriend, Fruit, Vegetable
-
-
 
 
 class CompanyViewSet(viewsets.ModelViewSet):
